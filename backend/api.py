@@ -18,5 +18,16 @@ def get_code():
         tokens.append(f.read())
     return jsonify(body=tokens)
 
+@app.route('/everyword')
+def get_everyword():
+    print("====Reading code====")
+    with open('code.txt', 'r') as file:
+        content = file.read()
+    
+    words = content.split()
+    print(words)
+
+    return jsonify(body=words)
+
 if __name__ == '__main__':
     app.run(debug=True)

@@ -42,23 +42,16 @@ class EveryWord(Resource):
 
         return jsonify(body=words)
 
-
-class Example(Resource):
+class StaticCode(Resource):
     def get(self):
-        tokenizer = AutoTokenizer.from_pretrained("Salesforce/codegen-350M-mono")
-        model = AutoModelForCausalLM.from_pretrained("Salesforce/codegen-350M-mono")
-
-        text = "def hello_world():"
-        input_ids = tokenizer(text, return_tensors="pt").input_ids
-
-        generated_ids = model.generate(input_ids, max_length=128)
-        return jsonify(body=tokenizer.decode(generated_ids[0], skip_special_tokens=True))
-
-
+        original_code =[]
+        with open("static_code.txt") as f:
+            original_code.append(f.read())
+        return jsonify(body=original_code)
 
 api.add_resource(Code, '/')
 api.add_resource(EveryWord, '/everyword')
-api.add_resource(Example, '/example')
+api.add_resource(StaticCode, '/staticcode')
 
 if __name__ == '__main__':
     app.run(debug=True)

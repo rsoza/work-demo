@@ -1,36 +1,39 @@
+from langchain.prompts import PromptTemplate
+from langchain.chains import LLMChain
+from langchain.llms import HuggingFaceHub
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
-hft = "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"
+os.environ['HUGGINGFACEHUB_API_TOKEN'] = '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'
+hft = os.environ.get("HUGGINGFACEHUB_API_TOKEN")
+
+print(hft)
 
 
-from langchain.llms import HuggingFaceHub, CTransformers
+template = """"Question: {question}"""
 
-from langchain.chains import LLMChain
-from langchain.prompts import PromptTemplate
-
-
-temp = """"Question: {question}"""
-
-prompt = PromptTemplate(template=temp, input_variables=["question"])
+prompt = PromptTemplate(template=template, input_variables=["question"])
 
 llm = HuggingFaceHub(
     repo_id="HuggingFaceH4/zephyr-7b-alpha",
-    model={"temperature":0.1, "max_new_token":200}
+    model_kwargs={"temperature": 0.1, "max_new_token": 1000}
 )
 
 
 chain = LLMChain(prompt=prompt, llm=llm, verbose=True)
 
 
-result = chain.run("""Fix this code for x to count up to 100 everytime: #include<stdio.h>
+result = chain.run("""
+                   Fix this code to print true, find the error and only return the code corrected with no explanation:
+                   #include<stdio.h>
 int main()
 {
     int i ;
     int x = 0 ;
-    for ( int i = 0 ; i < 100 ; i++ ) {
+    for ( int i = 99 ; i < 100 ; i++ ) {
         x = x + 1 ;
+        printf ( " x = %d \n " , x ) ;
     }
     if ( x == 100 ) {
         printf ( "true" ) ;

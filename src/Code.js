@@ -11,7 +11,7 @@ function ToggleCode() {
   const toggleSwitch = () => setCodeToEdit(!editCode);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/code")
+    fetch("http://127.0.0.1:5000/")
       .then((res) => res.json())
       .then((data) => console.log("data", [setdata(data.body), data]))
       .catch((error) => console.error("Error:", error));
@@ -31,9 +31,11 @@ function ToggleCode() {
           <motion.div className="handle" layout transition={spring} />
         </div>
         {editCode ? (
-          <pre>
-            {everyword.map((word) =>  <MenuItems name={word} />)}
-          </pre>
+          <>
+              {everyword.map((word) => (
+                <MenuItems name={word} />
+              ))}
+          </>
         ) : (
           <pre>
             {code.map((line) => (

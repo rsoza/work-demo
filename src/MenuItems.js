@@ -1,24 +1,47 @@
-import { Menu, MenuButton, MenuList, MenuItem, Button, Text } from "@chakra-ui/react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import React, {useState} from "react";
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Button,
+  Text,
+  Code,
+} from "@chakra-ui/react";
+
 
 const MenuItems = (props) => {
-  console.log("props", props);
+  const words = props.name.split(" ");
+  const parts = words.filter((word) => word.trim().length > 0);
+  const [p, setpart] = useState("");
+
+  
+
   return (
     <pre>
-      <Menu bg="white" color="black" >
-        <MenuButton as={Button} bg="white" width={80} rightIcon={<ChevronDownIcon color="white" />}>
-          <Text bg="white">
-            {props.name}
-            </Text>
-        </MenuButton>
-        <MenuList>
-          <MenuItem>Download</MenuItem>
-          <MenuItem>Create a Copy</MenuItem>
-          <MenuItem>Mark as Draft</MenuItem>
-          <MenuItem>Delete</MenuItem>
-          <MenuItem>Attend a Workshop</MenuItem>
-        </MenuList>
-      </Menu>
+      <Code bg="transparent">
+        {parts.map((part, index, array) => (
+          <Menu bg="transparent" _hover={{ bg: "grey" }} color="black">
+            <MenuButton
+              as={Button}
+              bg="transparent"
+              width="auto"
+              _hover={{ bg: "grey" }}
+            >
+              <Text _hover={{ bg: "grey" }} color="white">
+                {part}
+              </Text>
+            </MenuButton>
+            <MenuList>
+              <MenuItem onClick={() => array[index] = "foo"}>foo</MenuItem>
+              <MenuItem onClick={() => array[index] = "foo"}>double</MenuItem>
+              <MenuItem onClick={() => array[index] = "foo"}>while</MenuItem>
+              <MenuItem onClick={() => array[index] = "foo"}>var</MenuItem>
+              <MenuItem onClick={() => array[index] = "foo"}>if</MenuItem>
+            </MenuList>
+          </Menu>
+        ))}
+      </Code>
     </pre>
   );
 };
